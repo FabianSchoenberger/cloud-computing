@@ -6,20 +6,31 @@ The application is called flou and serves as a focus dashboard in the web. It co
 We are planning to containerize the frontend and microservices of this application using Docker, orchestrate them using Kubernetes and deploy on GCP.  
 Furthermore, we are going to implement this with CI/CD using GitHub Actions to allow for fast and stable deployment.
 
-# team
+## team
 
 Fabian Schoenberger, k12308997  
 Alex Siala, k12309011  
 Philipp Olivotto, k12223453
 
-# milestones
+## architecture
 
-continuous documentation (everyone)
+![architecture](./.markdown/architecture.png)
 
+## CI/CD flow
+
+![CI/CD flow](./.markdown/ci.png)
+
+## tasks
+
+* continuous documentation (everyone)
 * split backend into microservices (Fabian Schoenberger)
 * containerization using Docker (Fabian Schoenberger)
 * automatic builds using GitHub actions (Alex Siala)
 * orchestration using Kubernetes (Philipp Olivotto)
 * deployment to GCP using GitHub actions (everyone)
-* integrate Dynatrace for observation (Philipp Olivotto)
+* integrate Dynatrace for observation (Philipp Olivotto) TODO
 * presentation (everyone)
+
+## demo flow
+
+TODO
