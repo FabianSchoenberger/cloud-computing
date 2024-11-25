@@ -3,7 +3,7 @@
 We are going to split an existing monolithic application into microservices and deploy it to the cloud.  
 The application is called flou and serves as a focus dashboard in the web. It consists of a SvelteKit frontend, a Spring Boot backend and a PostgreSQL database.
 
-We are planning to containerize the frontend and microservices of this application using Docker, orchestrate them using Kubernetes and deploy on GCP.  
+We are planning to containerize the frontend and microservices of this application using Docker, orchestrate them using Kubernetes and deploy on GCP. The Kubernetes cluster will be monitored by Dynatrace.
 Furthermore, we are going to implement this with CI/CD using GitHub Actions to allow for fast and stable deployment.
 
 ## team
@@ -28,7 +28,7 @@ Philipp Olivotto, k12223453
 * automatic builds using GitHub actions (Alex Siala)
 * orchestration using Kubernetes (Philipp Olivotto)
 * deployment to GCP using GitHub actions (everyone)
-* integrate Dynatrace for observation (Philipp Olivotto) TODO
+* integrate Dynatrace for Kubernetes monitoring (Philipp Olivotto)
 * presentation (everyone)
 
 ## demo flow
