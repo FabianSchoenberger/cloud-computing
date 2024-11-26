@@ -32,5 +32,12 @@ Philipp Olivotto, k12223453
 * presentation (everyone)
 
 ## demo flow
-
-TODO
+* Deployment of a new version of the backend service / frontend service
+    * Github Actions: What is triggered? What is done in the background (tests)?
+    * Kubernetes: Check currently running nodes, pods and containers. What is done in the background?
+* Github Actions - check used files
+    * Triggers (Workflow)
+    * File for building image
+    * Test files
+* Kubernetes - check used files
+    * Deployment YAML
