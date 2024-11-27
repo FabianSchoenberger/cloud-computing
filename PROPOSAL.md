@@ -40,3 +40,5 @@ Philipp Olivotto, k12223453
     * Build file
 * Kubernetes - showcase
     * Deployment YAML
+* Dynatrace
+    * Brief Insight into our Kubernetes Cluster using Dynatrace
