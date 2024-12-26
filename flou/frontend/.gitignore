@@ -1,0 +1,11 @@
+# IDE
+.idea/
+
+# Node
+node_modules/
+
+# SvelteKit
+.svelte-kit/
+build/
+.env.local
+.env.*.local

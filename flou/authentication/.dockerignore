@@ -1,0 +1,17 @@
+# IDE
+.idea/
+
+# Git
+.gitignore
+
+# Docker
+Dockerfile
+
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Spring Boot
+build/

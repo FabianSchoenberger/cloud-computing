@@ -1,0 +1,37 @@
+@import "colors";
+
+:root {
+  --surface_background: rgba(#{$gray}, .6);
+  --surface_color: rgba(#{$light-gray}, 1);
+
+  --button_primary_background: rgba(#{$medium-gray}, 1);
+  --button_primary_color: rgba(#{$dark-gray}, 1);
+
+  --input_background: rgba(#{$light-gray}, 1);
+  --input_color: rgba(#{$dark-gray}, 1);
+
+  --top-bar_background: rgba(#{$gray}, .75);
+  --top-bar_color: rgba(#{$light-gray}, 1);
+
+  --overlay_background: rgba(#{$gray}, 1);
+  --overlay_color: rgba(#{$light-gray}, 1);
+}
+
+@media(prefers-color-scheme: light) {
+  :root {
+    --surface_background: rgba(#{$white}, .8);
+    --surface_color: rgba(#{$dark-gray}, 1);
+
+    --button_primary_background: rgba(#{$light-gray}, 1);
+    --button_primary_color: rgba(#{$dark-gray}, 1);
+
+    --input_background: rgba(#{$light-gray}, 1);
+    --input_color: rgba(#{$dark-gray}, 1);
+
+    --top-bar_background: rgba(#{$white}, .75);
+    --top-bar_color: rgba(#{$dark-gray}, 1);
+
+    --overlay_background: rgba(#{$white}, 1);
+    --overlay_color: rgba(#{$dark-gray}, 1);
+  }
+}

@@ -1,0 +1,15 @@
+# IDE
+.idea/
+
+# Git
+.gitignore
+
+# Docker
+Dockerfile
+
+# Node
+node_modules/
+
+# SvelteKit
+.svelte-kit/
+build/
