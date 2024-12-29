@@ -1,0 +1,65 @@
+name: Build Docker Images
+
+# Triggered, when new Version-Tag is created
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out codee and login to Docker Hub
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # github.ref_name
+    # When Workflow is triggered through Version-Tag -> the ref_name should be something like v1.0.0
+
+    # Backend - Authentication
+    - name: Build Authentication Backend (Gradle)
+      run: |
+        cd authentication
+        ./gradlew dependencies
+        ./gradlew bootJar
+        cd ..
+    - name: Build and Push Authentication Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }} authentication/
+        docker push ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }}
+
+    # Backend - ToDo
+    - name: Build ToDo Backend (Gradle)
+      run: |
+        cd todo
+        ./gradlew dependencies
+        ./gradlew bootJar
+        cd ..
+    - name: Build and Push ToDo Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }} todo/
+        docker push ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }}
+
+  # Frontend
+    - name: Build Frontend (npm)
+      run: |
+        cd frontend
+        npm clean-install
+        npm run build
+        cd ..
+    - name: Build and Push Frontend Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} frontend/
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }}
