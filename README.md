@@ -26,8 +26,6 @@ The frontend only needed minor adjustments due to the modular nature of our API 
 
 # 2. Docker builds
 
-//TODO mention required environment variables
-
 ## backends
 
 To prepare the build of either backend, execute the following in the respective directory:
