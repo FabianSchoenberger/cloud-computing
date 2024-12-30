@@ -62,11 +62,11 @@ To build the image execute the following:
 docker build -t <name> .
 ```
 
-#3 Github Actions
+# 3. Github Actions
 
 The project uses two separate workflows, build.yml and deploy.yml, to ensure a clean and structured CI/CD pipeline.
 
-### Workflow Overview
+## Workflow Overview
 
 - **build.yml**: Responsible for building and pushing Docker images for the project's components.
 - **deploy.yml**: Handles deployment of the application to a Kubernetes cluster on Google Cloud Platform (GCP).
@@ -95,8 +95,6 @@ The `build.yml` workflow performs the following tasks:
    - Each image is tagged with the Git tag that triggered the workflow (`github.ref_name`).
    - Ensures consistency between code versions and image versions.
 
----
-
 ### 3. deploy.yml
 
 The `deploy.yml` workflow ensures the application is deployed to a Kubernetes cluster.
@@ -122,9 +120,9 @@ The `deploy.yml` workflow ensures the application is deployed to a Kubernetes cl
    - Ensures the latest Docker images (built in `build.yml`) are used.
 
 
-## 4. Getting Started
+# 4. Getting Started
 
-### Prerequisites
+## Prerequisites
 
 1. Ensure the following secrets are configured in your GitHub repository:
    - `DOCKER_USERNAME`
