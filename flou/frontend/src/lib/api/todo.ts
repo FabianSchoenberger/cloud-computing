@@ -1,5 +1,6 @@
 import {TODO_API} from "$env/static/private";
 import api from "$lib/api/index";
+import {ENV} from "$lib/env";
 
 export interface ToDoResponse {
     id: number;
@@ -17,8 +18,13 @@ export interface UpdateToDoRequest{
 }
 
 export const todo = {
-    get: (fetch: typeof window.fetch) => api(TODO_API).get(fetch, "/todo"),
-    create: (fetch: typeof window.fetch, request: CreateToDoRequest) => api(TODO_API).post(fetch, "/todo", request),
-    update: (fetch: typeof window.fetch, request: UpdateToDoRequest) => api(TODO_API).put(fetch, "/todo", request),
-    delete: (fetch: typeof window.fetch, id: number) => api(TODO_API).delete(fetch, `/todo/${id}`)
+    get: (fetch: typeof window.fetch) => _api().get(fetch, "/todo"),
+    create: (fetch: typeof window.fetch, request: CreateToDoRequest) => _api().post(fetch, "/todo", request),
+    update: (fetch: typeof window.fetch, request: UpdateToDoRequest) => _api().put(fetch, "/todo", request),
+    delete: (fetch: typeof window.fetch, id: number) => _api().delete(fetch, `/todo/${id}`)
+}
+
+function _api() {
+    const url = ENV.get(ENV.TODO_API);
+    return api(url)
 }

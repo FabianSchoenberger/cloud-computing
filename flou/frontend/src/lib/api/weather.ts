@@ -26,12 +26,14 @@ export interface WeatherResponse {
     }
 }
 
+const API = "http://api.weatherapi.com/v1"
+
 export const weather = {
     get: (fetch: typeof window.fetch, latitude: number, longitude: number) => {
         const parameters = new URLSearchParams({
             key: WEATHER_API_KEY,
             q: `${latitude},${longitude}`
         })
-        return api(WEATHER_API).get(fetch, "/current.json", parameters)
+        return api(API).get(fetch, "/current.json", parameters)
     }
 }
