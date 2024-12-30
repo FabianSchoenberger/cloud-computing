@@ -1,10 +1,28 @@
 # 1. Architecture
 
-//TODO explain previous architecture  
-//TODO explain process of splitting architecture  
-//TODO explain split architecture
+The previous architecture used a simple monolithic approach with a server-side rendered frontend and a large backend, which is responsible for every feature.  
+
+![old architecture](./.markdown/architecture%20(old).png)
+
+This means adding new features or updating existing ones would require significant downtime;
+Also, as the backend grows in features, complexity makes finding issues and improving on said features more complicated.
+
+Splitting the backend into multiple microservices can help mitigate these problems.
+
+Our approach to splitting the backend was to factor out different features and determine their dependencies.
+This approach led us to the following architecture.
 
 ![architecture](./.markdown/architecture.png)
+
+The previous monolithic backend was split into two microservices since these are the only features that require a backend.
+Obviously, as the number of features grow, so would the count of microservices.  
+
+The ToDo microservice needs to match ToDos to a user, meaning it depends on the authentication service.  
+This is solved using the following approach.
+
+![ToDo Service authentication](./.markdown/todo%20service%20authentication.png)
+
+The frontend only needed minor adjustments due to the modular nature of our API handling.
 
 # 2. Docker builds
 
