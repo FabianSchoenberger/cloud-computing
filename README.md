@@ -69,9 +69,11 @@ The project uses two separate workflows, build.yml and deploy.yml, to ensure a c
 - **build.yml**: Responsible for building and pushing Docker images for the project's components.
 - **deploy.yml**: Handles deployment of the application to a Kubernetes cluster on Google Cloud Platform (GCP).
 
-### 2. build.yml
+## build.yml
 
-The `build.yml` workflow performs the following tasks:
+The `build.yml` workflow build an pushes Docker images.
+Each image is tagged with the Git tag that triggered the workflow (`github.ref_name`).
+Ensures consistency between code versions and image versions.
 
 1. **Triggered By**: 
    - A `push` to any version tag (`v*`).
@@ -89,13 +91,11 @@ The `build.yml` workflow performs the following tasks:
    - `DOCKER_USERNAME`: Your Docker Hub username.
    - `DOCKER_PASSWORD`: Your Docker Hub password or access token.
 
-4. **Highlights**:
-   - Each image is tagged with the Git tag that triggered the workflow (`github.ref_name`).
-   - Ensures consistency between code versions and image versions.
-
-### 3. deploy.yml
+## deploy.yml
 
 The `deploy.yml` workflow ensures the application is deployed to a Kubernetes cluster.
+Utilizes Kubernetes manifests (`k8s/*.yaml`) to deploy the application.
+Ensures the latest Docker images (built in `build.yml`) are used.
 
 1. **Triggered By**: 
    - Depends on the successful completion of the `build.yml` workflow.
@@ -113,24 +113,14 @@ The `deploy.yml` workflow ensures the application is deployed to a Kubernetes cl
    - `GCP_PROJECT_ID`: The Google Cloud project ID.
    - `GCP_SA_KEY`: A JSON key for a Google Cloud Service Account with permissions for Kubernetes Engine.
 
-4. **Highlights**:
-   - Utilizes Kubernetes manifests (`k8s/*.yaml`) to deploy the application.
-   - Ensures the latest Docker images (built in `build.yml`) are used.
-
-
-# 4. Getting Started
 
 ## Prerequisites
 
-1. Ensure the following secrets are configured in your GitHub repository:
+Ensure the following secrets are configured in your GitHub repository:
    - `DOCKER_USERNAME`
    - `DOCKER_PASSWORD`
    - `GCP_PROJECT_ID`
    - `GCP_SA_KEY`
-   
-2. Docker images are expected to be built using:
-   - Gradle (`bootJar`) for backend services.
-   - NPM (`clean-install` and `build`) for the frontend.
   
 - Ensure all Kubernetes manifests (`k8s/*.yaml`) are correctly configured with the appropriate Docker image paths.
 - Tags (`v*`) should follow a semantic versioning convention to maintain clarity.
