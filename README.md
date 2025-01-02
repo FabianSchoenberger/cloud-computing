@@ -69,6 +69,19 @@ The project uses two separate workflows, build.yml and deploy.yml, to ensure a c
 - **build.yml**: Responsible for building and pushing Docker images for the project's components.
 - **deploy.yml**: Handles deployment of the application to a Kubernetes cluster on Google Cloud Platform (GCP).
 
+## Prerequisites
+
+Ensure the following secrets are configured in your GitHub repository:
+- `DOCKER_USERNAME`
+- `DOCKER_PASSWORD`
+- `GCP_PROJECT_ID`
+- `GCP_SA_KEY`
+
+- Ensure all Kubernetes manifests (`k8s/*.yaml`) are correctly configured with the appropriate Docker image paths.
+- Tags (`v*`) should follow a semantic versioning convention to maintain clarity.
+- Both workflows work together, but `deploy.yml` is dependent on the success of `build.yml`.
+
+
 ## build.yml
 
 The `build.yml` workflow build an pushes Docker images.
@@ -114,14 +127,3 @@ Ensures the latest Docker images (built in `build.yml`) are used.
    - `GCP_SA_KEY`: A JSON key for a Google Cloud Service Account with permissions for Kubernetes Engine.
 
 
-## Prerequisites
-
-Ensure the following secrets are configured in your GitHub repository:
-   - `DOCKER_USERNAME`
-   - `DOCKER_PASSWORD`
-   - `GCP_PROJECT_ID`
-   - `GCP_SA_KEY`
-  
-- Ensure all Kubernetes manifests (`k8s/*.yaml`) are correctly configured with the appropriate Docker image paths.
-- Tags (`v*`) should follow a semantic versioning convention to maintain clarity.
-- Both workflows work together, but `deploy.yml` is dependent on the success of `build.yml`.

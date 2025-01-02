@@ -31,6 +31,7 @@ jobs:
     # Backend - Authentication
     - name: Build Authentication Backend (Gradle)
       run: |
+        cd flou
         cd authentication
         ./gradlew dependencies
         ./gradlew bootJar
@@ -43,6 +44,7 @@ jobs:
     # Backend - ToDo
     - name: Build ToDo Backend (Gradle)
       run: |
+        cd flou
         cd todo
         ./gradlew dependencies
         ./gradlew bootJar
@@ -55,6 +57,7 @@ jobs:
   # Frontend
     - name: Build Frontend (npm)
       run: |
+        cd flou
         cd frontend
         npm clean-install
         npm run build
