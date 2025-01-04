@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-image-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-app
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      containers:
+        - name: frontend-container
+          # TODO: we have to change this to match the build from the CI/CD
+          image: zbaakez/flou-frontend:latest
+          ports:
+            - containerPort: 3000
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: WEATHER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: weather-api-key
+                  key: WEATHER_API_KEY
+            - name: TEMP_ICS
+              valueFrom:
+                secretKeyRef:
+                  name: temp-ics
+                  key: TEMP_ICS
+            - name: AUTH_API
+              value: "http://authentication-service:8080"
+            - name: TODO_API
+              value: "http://todo-service:8080"

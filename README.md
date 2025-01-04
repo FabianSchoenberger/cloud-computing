@@ -24,7 +24,40 @@ This is solved using the following approach.
 
 The frontend only needed minor adjustments due to the modular nature of our API handling.
 
-# 2. Docker builds
+# 2. Google Cloud Platform
+To deploy the application on Google Cloud Platform (GCP), we need a GCP Project with a GKE (Kubernetes) cluster and two PostgreSQL databases. 
+Follow these steps to prepare the environment:
+
+1. Create a New Project\
+Start by creating a new project in GCP named `flou`. Note down the generated `GCP_PROJECT_ID`, as it will be required in later steps.
+
+2. Set Up a Service Account and get the SA_KEY\
+Navigate to `IAM & Admin > Service Accounts` in the GCP Console. Create a service account with permissions to access and manage the GKE cluster (Kubernetes Engine Service Agent role).
+Once the service account is created, generate a JSON key for it. Securely store this key file, as it will be used later as the `GCP_SA_KEY`.
+
+Now the preparations are done and we can setup the rest.
+
+## Databases
+TODO: we have to create two databases...
+
+## GKE Cluster
+We create a GKE Cluster in GCP using the webpage. When creating the cluster we use the 'Standard mode'. We change it's 
+name to `flou-cluster-1` and keep all the other settings at default.
+This will create a Kubernetes cluster with 3 nodes, which is then used to host all of our services (frontend-service, todo-service, authentication-service).
+
+Now we manually add some secrets to the cluster, which can be used by the pods as environment variables.
+For that we first connect to the cluster in the `Google Cloud Shell`: (The command can be accessed from the Webpage)
+```shell
+gcloud container clusters get-credentials flou-cluster-1 --zone your-cluster-zone --project your-project-id
+```
+Now kubectl is configured for our cluster and we can add needed secrets.
+```shell
+kubectl create secret generic weather-api-key --from-literal=WEATHER_API_KEY=your-weather-api-key
+kubectl create secret generic temp-ics --from-literal=TEMP_ICS=your-temp-ics
+TODO: what else is needed? ...database credentials...
+```
+
+# 3. Docker builds
 
 ## backends
 
@@ -60,7 +93,7 @@ To build the image execute the following:
 docker build -t <name> .
 ```
 
-# 3. Github Actions
+# 4. Github Actions
 
 The project uses two separate workflows, build.yml and deploy.yml, to ensure a clean and structured CI/CD pipeline.
 

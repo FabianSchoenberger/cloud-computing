@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-deployment
+spec:
+  replicas: 0 # TODO: currently 0, as the databases and its credentials as secrets are still missing
+  selector:
+    matchLabels:
+      app: authentication-app
+  template:
+    metadata:
+      labels:
+        app: authentication-app
+    spec:
+      containers:
+        - name: authentication-container
+          # TODO: we have to change this to match the build from the CI/CD
+          image: zbaakez/flou-authentication:latest
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsUser: 1000
+          # TODO: set env variables for DB
