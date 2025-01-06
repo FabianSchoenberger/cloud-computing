@@ -99,8 +99,9 @@ The project uses two separate workflows, build.yml and deploy.yml, to ensure a c
 
 ## Workflow Overview
 
-- **build.yml**: Responsible for building and pushing Docker images for the project's components.
-- **deploy.yml**: Handles deployment of the application to a Kubernetes cluster on Google Cloud Platform (GCP).
+**buildAndDeploy.yml**
+- Responsible for building and pushing Docker images for the project's components.
+- Handles deployment of the application to a Kubernetes cluster on Google Cloud Platform (GCP).
 
 ## Prerequisites
 
@@ -111,15 +112,15 @@ Ensure the following secrets are configured in your GitHub repository:
 - `GCP_SA_KEY`
 
 - Ensure all Kubernetes manifests (`k8s/*.yaml`) are correctly configured with the appropriate Docker image paths.
-- Tags (`v*`) should follow a semantic versioning convention to maintain clarity.
-- Both workflows work together, but `deploy.yml` is dependent on the success of `build.yml`.
+- Tags (`v*`) should follow a semantic versioning convention to maintain clarity - for example v1.0.0
+- Both jobs of the workflow work together, but `Deploy` is dependent on the success of `Build`.
 
 
-## build.yml
+## Build Job
 
-The `build.yml` workflow build an pushes Docker images.
+The Build Job builds and pushes Docker images.
 Each image is tagged with the Git tag that triggered the workflow (`github.ref_name`).
-Ensures consistency between code versions and image versions.
+The job ensures consistency between code versions and image versions.
 
 1. **Triggered By**: 
    - A `push` to any version tag (`v*`).
@@ -137,14 +138,14 @@ Ensures consistency between code versions and image versions.
    - `DOCKER_USERNAME`: Your Docker Hub username.
    - `DOCKER_PASSWORD`: Your Docker Hub password or access token.
 
-## deploy.yml
+## Deploy Job
 
-The `deploy.yml` workflow ensures the application is deployed to a Kubernetes cluster.
+The Deploy Job ensures the application is deployed to a Kubernetes cluster.
 Utilizes Kubernetes manifests (`k8s/*.yaml`) to deploy the application.
-Ensures the latest Docker images (built in `build.yml`) are used.
+Ensures the latest Docker images (built in the Build Job) are used.
 
 1. **Triggered By**: 
-   - Depends on the successful completion of the `build.yml` workflow.
+   - Depends on the successful completion of the Build Job of this workflow.
 
 2. **Actions**:
    - Checks out the code.
