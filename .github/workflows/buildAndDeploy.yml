@@ -83,6 +83,19 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
+      #NEW
+
+      - name: Install GKE Auth Plugin
+        run: gcloud components install gke-gcloud-auth-plugin
+
+      - name: Configure Kubernetes Context
+        run: gcloud container clusters get-credentials flou-cluster-1 --zone europe-west8-a --project flou-446611
+
+      - name: Verify Kubernetes Context
+        run: kubectl config current-context
+
+        #NEW
+
       - name: Configure Docker for GCR
         run: |
           gcloud auth configure-docker
