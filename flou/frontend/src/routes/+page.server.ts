@@ -1,11 +1,11 @@
 import {type Actions, fail, redirect} from "@sveltejs/kit";
 
 import {account, type AccountResponse} from "$lib/api/account";
-import {TEMP_ICS} from "$env/static/private";
 import {type CalendarEntry, calendar} from "$lib/api/calender";
 import {session} from "$lib/api/session";
 import {todo, type ToDoResponse} from "$lib/api/todo";
 import {weather, type WeatherResponse} from "$lib/api/weather";
+import {ENV} from "$lib/env";
 
 export interface Load {
     account: AccountResponse,
@@ -99,7 +99,7 @@ async function getToDos(fetch: typeof window.fetch): Promise<ToDoResponse[]> {
 }
 
 async function getCalendar(fetch: typeof window.fetch): Promise<CalendarEntry[]> {
-    return calendar.get(fetch, TEMP_ICS)
+    return calendar.get(fetch, ENV.get(ENV.CALENDAR_ICS))
 }
 
 async function getWeather(fetch: typeof window.fetch, latitude: number, longitude: number): Promise<WeatherResponse> {
