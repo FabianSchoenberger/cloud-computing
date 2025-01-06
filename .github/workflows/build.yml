@@ -49,7 +49,7 @@ jobs:
         cd ../..
     - name: Build and Push ToDo Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }} todo/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }} flou/todo/
         docker push ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }}
 
   # Frontend
@@ -61,5 +61,5 @@ jobs:
         cd ../..
     - name: Build and Push Frontend Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} frontend/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} flou/frontend/
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }}
