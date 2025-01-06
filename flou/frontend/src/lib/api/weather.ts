@@ -1,6 +1,5 @@
-import {WEATHER_API, WEATHER_API_KEY} from "$env/static/private";
 import api from "$lib/api/index";
-
+import {ENV} from "$lib/env";
 
 export interface WeatherResponse {
     location: {
@@ -31,7 +30,7 @@ const API = "http://api.weatherapi.com/v1"
 export const weather = {
     get: (fetch: typeof window.fetch, latitude: number, longitude: number) => {
         const parameters = new URLSearchParams({
-            key: WEATHER_API_KEY,
+            key: ENV.get(ENV.WEATHER_API_KEY),
             q: `${latitude},${longitude}`
         })
         return api(API).get(fetch, "/current.json", parameters)
