@@ -95,7 +95,8 @@ docker build -t <name> .
 
 # 4. Github Actions
 
-The project uses two separate workflows, build.yml and deploy.yml, to ensure a clean and structured CI/CD pipeline.
+The project uses one workflow file with two jobs to ensure a clean and structured CI/CD pipeline.
+The file is located in the .github folder.
 
 ## Workflow Overview
 
