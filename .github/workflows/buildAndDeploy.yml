@@ -96,7 +96,7 @@ jobs:
       - name: Verify Kubernetes Context
         run: kubectl config current-context
 
-        #NEW
+        #NE
 
       - name: Configure Docker for GCR
         run: |
