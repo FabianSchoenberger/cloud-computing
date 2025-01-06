@@ -34,10 +34,10 @@ jobs:
         cd flou/authentication
         ./gradlew dependencies
         ./gradlew bootJar
-         cd ../..
+        cd ../..
     - name: Build and Push Authentication Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }} authentication/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }} flou/authentication/
         docker push ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }}
 
     # Backend - ToDo
