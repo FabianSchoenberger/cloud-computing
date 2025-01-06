@@ -31,12 +31,9 @@ jobs:
     # Backend - Authentication
     - name: Build Authentication Backend (Gradle)
       run: |
-        cd flou
-        cd authentication
+        cd flou/authentication
         ./gradlew dependencies
         ./gradlew bootJar
-        cd ..
-        cd ..
     - name: Build and Push Authentication Image
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }} authentication/
@@ -45,12 +42,9 @@ jobs:
     # Backend - ToDo
     - name: Build ToDo Backend (Gradle)
       run: |
-        cd flou
-        cd todo
+        cd flou/todo
         ./gradlew dependencies
         ./gradlew bootJar
-        cd ..
-        cd ..
     - name: Build and Push ToDo Image
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/todo:${{ github.ref_name }} todo/
@@ -59,12 +53,9 @@ jobs:
   # Frontend
     - name: Build Frontend (npm)
       run: |
-        cd flou
-        cd frontend
+        cd flou/frontend
         npm clean-install
         npm run build
-        cd ..
-        cd ..
     - name: Build and Push Frontend Image
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} frontend/
