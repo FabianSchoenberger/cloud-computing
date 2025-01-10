@@ -67,9 +67,14 @@ jobs:
 
     - name: Update Deplyoment Tags
       run: |
-        sed -i "s/fschoenberger\/authentication:.*/fschoenberger\/authentication:${{ github.ref_name }}/" flou/authentication/k8s/deployment.yaml
-        sed -i "s/fschoenberger\/todo:.*/fschoenberger\/todo:${{ github.ref_name }}/" flou/todo/k8s/deployment.yaml
-        sed -i "s/fschoenberger\/frontend:.*/fschoenberger\/frontend:${{ github.ref_name }}/" flou/frontend/k8s/deployment.yaml
+        echo "Updating image tags with ref: ${{ github.ref_name }}"
+        sed -i "s|fschoenberger/authentication:.*|fschoenberger/authentication:${{ github.ref_name }}|" flou/authentication/k8s/deployment.yaml
+        sed -i "s|fschoenberger/todo:.*|fschoenberger/todo:${{ github.ref_name }}|" flou/todo/k8s/deployment.yaml
+        sed -i "s|fschoenberger/frontend:.*|fschoenberger/frontend:${{ github.ref_name }}|" flou/frontend/k8s/deployment.yaml
+
+    - name: Verify Updated Files
+      run: |
+        cat flou/authentication/k8s/deployment.yaml
 
   #--------------------------------------------------DEPLOY Section
 
