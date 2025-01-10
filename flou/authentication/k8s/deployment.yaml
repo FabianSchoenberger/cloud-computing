@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: authentication-container
-          image: fschoenberger/authentication:t2
+          image: fschoenberger/authentication:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

@@ -65,17 +65,6 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} flou/frontend/
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }}
 
-    - name: Update Deplyoment Tags
-      run: |
-        echo "Updating image tags with ref: ${{ github.ref_name }}"
-        sed -i "s|fschoenberger/authentication:.*|fschoenberger/authentication:${{ github.ref_name }}|" flou/authentication/k8s/deployment.yaml
-        sed -i "s|fschoenberger/todo:.*|fschoenberger/todo:${{ github.ref_name }}|" flou/todo/k8s/deployment.yaml
-        sed -i "s|fschoenberger/frontend:.*|fschoenberger/frontend:${{ github.ref_name }}|" flou/frontend/k8s/deployment.yaml
-
-    - name: Verify Updated Files
-      run: |
-        cat flou/authentication/k8s/deployment.yaml
-
   #--------------------------------------------------DEPLOY Section
 
   deploy:
@@ -85,6 +74,13 @@ jobs:
 
     # Setup everything for the Google Cloud and login
     steps:
+      - name: Update Deplyoment Tags
+        run: |
+          echo "Updating image tags with ref: ${{ github.ref_name }}"
+          sed -i "s|fschoenberger/authentication:.*|fschoenberger/authentication:${{ github.ref_name }}|" flou/authentication/k8s/deployment.yaml
+          sed -i "s|fschoenberger/todo:.*|fschoenberger/todo:${{ github.ref_name }}|" flou/todo/k8s/deployment.yaml
+          sed -i "s|fschoenberger/frontend:.*|fschoenberger/frontend:${{ github.ref_name }}|" flou/frontend/k8s/deployment.yaml
+
       - name: Checkout Code
         uses: actions/checkout@v3
 
