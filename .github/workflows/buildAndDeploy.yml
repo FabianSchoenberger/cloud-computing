@@ -16,7 +16,7 @@ jobs:
     # Check out code and login to Docker Hub
     - name: Checkout Code
       uses: actions/checkout@v3
-      
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -41,7 +41,7 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }} flou/authentication/
         docker push ${{ secrets.DOCKER_USERNAME }}/authentication:${{ github.ref_name }}
 
-    # Backend - ToDo
+    # Backend
     - name: Build ToDo Backend (Gradle)
       run: |
         cd flou/todo
@@ -64,12 +64,6 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }} flou/frontend/
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.ref_name }}
-
-    - name: Update Deplyoment Tags
-      run: |
-        sed -i "s/fschoenberger\/authentication:.*/fschoenberger\/authentication:${{ github.ref_name }}/" flou/authentication/k8s/deployment.yaml
-        sed -i "s/fschoenberger\/todo:.*/fschoenberger\/todo:${{ github.ref_name }}/" flou/todo/k8s/deployment.yaml
-        sed -i "s/fschoenberger\/frontend:.*/fschoenberger\/frontend:${{ github.ref_name }}/" flou/frontend/k8s/deployment.yaml
 
   #--------------------------------------------------DEPLOY Section
 
@@ -96,8 +90,12 @@ jobs:
           cluster_name: flou-cluster-1
           location: europe-west8-a
 
-      - name: Deploy to Kubernetes
+      - name: Set correct version tags and Deploy to Kubernetes
         run: |
+          sed -i "s|fschoenberger/authentication:.*|fschoenberger/authentication:${{ github.ref_name }}|" flou/authentication/k8s/deployment.yaml
+          sed -i "s|fschoenberger/todo:.*|fschoenberger/todo:${{ github.ref_name }}|" flou/todo/k8s/deployment.yaml
+          sed -i "s|fschoenberger/frontend:.*|fschoenberger/frontend:${{ github.ref_name }}|" flou/frontend/k8s/deployment.yaml
+
           kubectl apply -f flou/authentication/k8s/deployment.yaml
           kubectl apply -f flou/authentication/k8s/service.yaml
           kubectl apply -f flou/todo/k8s/deployment.yaml
