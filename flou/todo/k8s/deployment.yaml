@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: todo-deployment
 spec:
-  replicas: 0 # TODO: currently 0, as the databases and its credentials as secrets are still missing
+  replicas: 1
   selector:
     matchLabels:
       app: todo-app
@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: todo-container
-          # TODO: we have to change this to match the build from the CI/CD
-          image: zbaakez/flou-todo:latest
+          image: fschoenberger/todo:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           securityContext:
@@ -28,12 +28,15 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-credentials
+                  name: todo-db-credentials
                   key: username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-credentials
+                  name: todo-db-credentials
                   key: password
             - name: DB
-              value: "todo"
+              valueFrom:
+                secretKeyRef:
+                  name: todo-db-credentials
+                  key: db_host

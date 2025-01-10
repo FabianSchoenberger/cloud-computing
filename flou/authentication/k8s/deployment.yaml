@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: authentication-container
-          # TODO: we have to change this to match the build from the CI/CD
-          image: zbaakez/flou-authentication:latest
+          image: fschoenberger/authentication:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           securityContext:
@@ -24,14 +24,17 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-credentials
+                  name: auth-db-credentials
                   key: username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-credentials
+                  name: auth-db-credentials
                   key: password
             - name: DB
-              value: "todo"
+              valueFrom:
+                secretKeyRef:
+                  name: auth-db-credentials
+                  key: db_host
             - name: COOKIE_DOMAIN
               value: http://34.154.103.76/

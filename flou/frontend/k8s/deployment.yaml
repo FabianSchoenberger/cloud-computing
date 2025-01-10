@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          # TODO: we have to change this to match the build from the CI/CD
-          image: zbaakez/flou-frontend:latest
+          image: fschoenberger/frontend:latest
           ports:
             - containerPort: 3000
           securityContext:
