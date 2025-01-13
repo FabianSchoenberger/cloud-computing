@@ -16,6 +16,8 @@ export const actions: Actions = {
         const username = data.get("username") as string
         const password = data.get("password") as string
 
+        console.log(`Registration attempt for ${username}`);
+
         const register = await account.create(fetch, {username, password})
         if(!register.ok) {
             return fail(register.status)
