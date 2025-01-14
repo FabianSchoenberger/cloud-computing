@@ -93,12 +93,19 @@
     })
 
     function syncWeather() {
-        navigator.geolocation.getCurrentPosition(position => {
-            action("?/sync-weather", {
-                latitude: `${position.coords.latitude}`,
-                longitude: `${position.coords.longitude}`
-            })
-        })
+        // Commented out: this only works with https, currently we are using http
+        // navigator.geolocation.getCurrentPosition(position => {
+        //     action("?/sync-weather", {
+        //         latitude: `${position.coords.latitude}`,
+        //         longitude: `${position.coords.longitude}`
+        //     })
+        // })
+
+        // Hardcoded coordinates for Linz, Austria
+        action("?/sync-weather", {
+            latitude: "48.3069",
+            longitude: "14.286"
+        });
     }
 </script>
 
