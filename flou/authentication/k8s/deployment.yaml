@@ -37,4 +37,4 @@ spec:
                   name: auth-db-credentials
                   key: db_host
             - name: COOKIE_DOMAIN
-              value: http://34.154.103.76/
+              value: http://f-lou-com
