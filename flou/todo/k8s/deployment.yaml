@@ -40,3 +40,5 @@ spec:
                 secretKeyRef:
                   name: todo-db-credentials
                   key: db_host
+            - name: COOKIE_DOMAIN
+              value: f-lou.com

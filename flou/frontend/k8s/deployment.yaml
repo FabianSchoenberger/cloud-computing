@@ -25,7 +25,7 @@ spec:
                 secretKeyRef:
                   name: weather-api-key
                   key: WEATHER_API_KEY
-            - name: TEMP_ICS
+            - name: CALENDAR_ICS
               valueFrom:
                 secretKeyRef:
                   name: temp-ics

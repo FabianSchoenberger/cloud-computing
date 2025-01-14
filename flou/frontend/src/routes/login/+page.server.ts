@@ -19,6 +19,7 @@ export const actions: Actions = {
         console.log(`Login attempt for ${username}`);
 
         const login = await session.create(fetch, {username, password})
+        console.log(`Login status: ${login.status}`)
         if (!login.ok) {
             return fail(login.status)
         }
