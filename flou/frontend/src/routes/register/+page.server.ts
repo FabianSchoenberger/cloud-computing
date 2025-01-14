@@ -19,6 +19,7 @@ export const actions: Actions = {
         console.log(`Registration attempt for ${username}`);
 
         const register = await account.create(fetch, {username, password})
+        console.log(`Registration status: ${register.status}`)
         if(!register.ok) {
             return fail(register.status)
         }
