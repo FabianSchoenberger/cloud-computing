@@ -24,60 +24,8 @@ This is solved using the following approach.
 
 The frontend only needed minor adjustments due to the modular nature of our API handling.
 
-# 2. Google Cloud Platform
-To deploy the application on Google Cloud Platform (GCP), we need a GCP Project with a GKE (Kubernetes) cluster and two PostgreSQL databases. 
-Follow these steps to prepare the environment:
 
-1. Create a New Project\
-Start by creating a new project in GCP named `flou`. Note down the generated `GCP_PROJECT_ID`, as it will be required in later steps.
-
-2. Set Up a Service Account and get the SA_KEY\
-Navigate to `IAM & Admin > Service Accounts` in the GCP Console. Create a service account with permissions to access and manage the GKE cluster (Kubernetes Engine Service Agent role).
-Once the service account is created, generate a JSON key for it. Securely store this key file, as it will be used later as the `GCP_SA_KEY`.
-
-Now the preparations are done and we can setup the rest.
-
-## Databases
-First we create a PostgeSQL instance with CloudSQL in GCP. We keep the default settings (if wanted change the region).
-We name the instance 'flou-postgres-instance'. Then we navigate to the instance and create two databases, one for the authentication-service and one for the todo-service.
-We name the databases 'flou-auth' and 'flou-todo' respectively. We also create a user for each database, with the same name as the corresponding database, and set a password.
-Now we navigate to the 'Connections' tab and add the IP '0.0.0.0/0' to the authorized networks. This allows all IP addresses to connect to the database.
-In our case this means that the pods in the GKE cluster can connect to the database. 
-This is definitely not recommended for production, but for our purposes it is sufficient to keep the setup simple.
-
-One should follow this guide for the recommended approach: https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine.
-
-Now we have a running PostgreSQL instance with two databases, which can be accessed from the GKE cluster.
-We find the public IP of the instance in the 'Overview' tab under 'Public IP address.
-It is also possible to connect from a PostgreSQL client (e.g. pgAdmin), by using the public IP of the instance and the user credentials.
-
-Note down the public IP, the credentials and the database names, as they will be needed later for GKE secrets.
-
-## GKE Cluster
-Now we create a GKE Cluster in GCP using the webpage. When creating the cluster we use the 'Standard mode'. We change it's 
-name to `flou-cluster-1` and keep all the other settings at default.
-This will create a Kubernetes cluster with 3 nodes, which is then used to host all of our services (frontend-service, todo-service, authentication-service).
-
-Now we manually add some secrets to the cluster, which can be used by the pods as environment variables.
-For that we first connect to the cluster in the `Google Cloud Shell`: (The command can be accessed from the Webpage)
-```shell
-gcloud container clusters get-credentials flou-cluster-1 --zone your-cluster-zone --project your-project-id
-```
-Now kubectl is configured for our cluster and we can add needed secrets.
-```shell
-kubectl create secret generic weather-api-key --from-literal=WEATHER_API_KEY=your-weather-api-key
-kubectl create secret generic temp-ics --from-literal=TEMP_ICS=your-temp-ics
-kubectl create secret generic todo-db-credentials --from-literal=username="flou-todo" --from-literal=password="<user-password>" --from-literal=db_host="jdbc:postgresql://<db_instance_public_ip>:5432/flou-todo"
-kubectl create secret generic auth-db-credentials --from-literal=username="flou-auth" --from-literal=password="<user-password>" --from-literal=db_host="jdbc:postgresql://<db_instance_public_ip>:5432/flou-auth"
-```
-
-## Domain name
-Just for the sake of completeness, we also bought a domain name from Google Domains. This is not necessary for the setup, but it is nice to have.
-We can use this domain name to access the frontend-service, instead of the IP address of the load balancer.
-For this we put the external IP address of the frontend-service into the A-Record of the domain name.
-Now its possible to access our application via `http://f-lou.com`.
-
-# 3. Docker builds
+# 2. Docker builds
 
 ## backends
 
@@ -113,7 +61,7 @@ To build the image execute the following:
 docker build -t <name> .
 ```
 
-# 4. Github Actions
+# 3. GitHub Actions
 
 The project uses one workflow file with two jobs to ensure a clean and structured CI/CD pipeline.
 The file is located in the .github folder.
@@ -181,6 +129,61 @@ Ensures the latest Docker images (built in the Build Job) are used.
    - `GCP_PROJECT_ID`: The Google Cloud project ID.
    - `GCP_SA_KEY`: A JSON key for a Google Cloud Service Account with permissions for Kubernetes Engine.
 
-## Accessing the Web Application
+
+# 2. Google Cloud Platform
+To deploy the application on Google Cloud Platform (GCP), we need a GCP Project with a GKE (Kubernetes) cluster and two PostgreSQL databases.
+Follow these steps to prepare the environment:
+
+1. Create a New Project\
+   Start by creating a new project in GCP named `flou`. Note down the generated `GCP_PROJECT_ID`, as it will be required in later steps.
+
+2. Set Up a Service Account and get the SA_KEY\
+   Navigate to `IAM & Admin > Service Accounts` in the GCP Console. Create a service account with permissions to access and manage the GKE cluster (Kubernetes Engine Service Agent role).
+   Once the service account is created, generate a JSON key for it. Securely store this key file, as it will be used later as the `GCP_SA_KEY`.
+
+Now the preparations are done and we can setup the rest.
+
+## Databases
+First we create a PostgeSQL instance with CloudSQL in GCP. We keep the default settings (if wanted change the region).
+We name the instance 'flou-postgres-instance'. Then we navigate to the instance and create two databases, one for the authentication-service and one for the todo-service.
+We name the databases 'flou-auth' and 'flou-todo' respectively. We also create a user for each database, with the same name as the corresponding database, and set a password.
+Now we navigate to the 'Connections' tab and add the IP '0.0.0.0/0' to the authorized networks. This allows all IP addresses to connect to the database.
+In our case this means that the pods in the GKE cluster can connect to the database.
+This is definitely not recommended for production, but for our purposes it is sufficient to keep the setup simple.
+
+One should follow this guide for the recommended approach: https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine.
+
+Now we have a running PostgreSQL instance with two databases, which can be accessed from the GKE cluster.
+We find the public IP of the instance in the 'Overview' tab under 'Public IP address.
+It is also possible to connect from a PostgreSQL client (e.g. pgAdmin), by using the public IP of the instance and the user credentials.
+
+Note down the public IP, the credentials and the database names, as they will be needed later for GKE secrets.
+
+## GKE Cluster
+Now we create a GKE Cluster in GCP using the webpage. When creating the cluster we use the 'Standard mode'. We change it's
+name to `flou-cluster-1` and keep all the other settings at default.
+This will create a Kubernetes cluster with 3 nodes, which is then used to host all of our services (frontend-service, todo-service, authentication-service).
+
+Now we manually add some secrets to the cluster, which can be used by the pods as environment variables.
+For that we first connect to the cluster in the `Google Cloud Shell`: (The command can be accessed from the Webpage)
+```shell
+gcloud container clusters get-credentials flou-cluster-1 --zone your-cluster-zone --project your-project-id
+```
+Now kubectl is configured for our cluster and we can add needed secrets.
+```shell
+kubectl create secret generic weather-api-key --from-literal=WEATHER_API_KEY=your-weather-api-key
+kubectl create secret generic temp-ics --from-literal=TEMP_ICS=your-temp-ics
+kubectl create secret generic todo-db-credentials --from-literal=username="flou-todo" --from-literal=password="<user-password>" --from-literal=db_host="jdbc:postgresql://<db_instance_public_ip>:5432/flou-todo"
+kubectl create secret generic auth-db-credentials --from-literal=username="flou-auth" --from-literal=password="<user-password>" --from-literal=db_host="jdbc:postgresql://<db_instance_public_ip>:5432/flou-auth"
+```
+
+## Domain name
+Just for the sake of completeness, we also bought a domain name from Google Domains. This is not necessary for the setup, but it is nice to have.
+We can use this domain name to access the frontend-service, instead of the IP address of the load balancer.
+For this we put the external IP address of the frontend-service into the A-Record of the domain name.
+Now it's possible to access our application via `http://f-lou.com`.
+
+
+## 5. Accessing the Web Application
 In our case it is possible to access the application via http://f-lou.com.\
 Alternatively, the frontend-service can be accessed via the external IP address of the load balancer.
