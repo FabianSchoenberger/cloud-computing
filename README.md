@@ -191,3 +191,25 @@ Alternatively, the frontend-service can be accessed via the external IP address 
 ## 6. Dynatrace Implementation
 Due to time constraints, we left out the implementation of Dynatrace monitoring.\
 It would have benefited the project by providing insights into the performance and health of the application.
+
+## 7. Lessons Learned
+
+### Benefits of Microservices Architecture
+-Scalability of single services.\
+-Maintainability: Services are simple
+
+### The Role of CI/CD Pipelines
+-Automation Reduces Errors: Automating build, test, and deployment pipelines through GitHub Actions ensured consistent deployments.\
+-Semantic Versioning: Strict adherence to semantic versioning (v*) improved traceability and coordination.\
+-GitHub Actions: Easy to set up and integrate.
+
+### Challenges in Cloud Setup
+The decision to allow all IPs (0.0.0.0/0) for database connections simplified the setup but could lead to security vulnerabilities. This highlighted the trade-offs between convenience and security, especially in non-production environments.\
+Manually adding secrets and configuring clusters was educational but also demonstrated the importance of automating these tasks with tools like Terraform or Helm for efficiency and repeatability.\
+Our docker images are public, which made it easy to pull them in the GKE cluster. If this is not wanted, it could be more useful to use the registry of GCP, to keep the flow more simple.
+
+### Importance of Documentation
+Detailed step-by-step instructions on setting up services, databases, and CI/CD pipelines ensured clarity for future team members or contributors.
+
+### Logging and Observability
+Logging is crucial to detect problems in the services / GitHub actions. We had problems with the database connection from GKE which was hard to debug, due to no monitoring and no custom logs.
