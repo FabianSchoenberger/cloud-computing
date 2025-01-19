@@ -187,3 +187,7 @@ Now it's possible to access our application via `http://f-lou.com`.
 ## 5. Accessing the Web Application
 In our case it is possible to access the application via http://f-lou.com.\
 Alternatively, the frontend-service can be accessed via the external IP address of the load balancer.
+
+## 6. Dynatrace Implementation
+Due to time constraints, we left out the implementation of Dynatrace monitoring.\
+It would have benefited the project by providing insights into the performance and health of the application.
